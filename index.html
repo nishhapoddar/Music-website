@@ -10,92 +10,89 @@
     </head>
 
     <body>
-        <div class="container flex bg-black">
-            <div class="left">
-                <div class="home bg-grey rounded m-1 p-1">
+        <div class="container bg-black">
+            <div class="app-shell bg-grey rounded">
+                <div class="topbar">
                     <div class="logo"><img class="invert" src="l1.svg" alt="Spotify"></div>
-                    <ul>
-                        <li><a class="home-link" href="index.html"><img class="invert" src="h1.svg" alt="home"> Home</a></li>
-                        <li><button id="searchToggleBtn" class="searchtoggle" type="button"><img class="invert" src="s1.svg" alt="search"> Search</button></li>
-                    </ul>
-                    <div id="songSearchPanel" class="songsearchpanel">
-                        <input id="songSearchInput" type="search" placeholder="Search songs or artists" aria-label="Search songs or artists" />
+                    <div class="topbar-actions">
+                        <a class="home-link" href="index.html"><img class="invert" src="h1.svg" alt="home"> Home</a>
+                        <button id="searchToggleBtn" class="searchtoggle" type="button"><img class="invert" src="s1.svg" alt="search"> Search</button>
+                        <button class="signupbtn" type="button">Sign up</button>
+                        <button class="loginbtn" type="button">Log in</button>
                     </div>
                 </div>
-                <div class="library bg-grey rounded m-1 p-1">
-                    <div class="heading">
-                        <img class="invert" src="l2.svg" alt=library>
-                        <h2>Your Library</h2>
+                <div id="songSearchPanel" class="songsearchpanel">
+                    <input id="songSearchInput" type="search" placeholder="Search songs or artists" aria-label="Search songs or artists" />
+                </div>
+                <div class="content-grid">
+                    <section class="library bg-grey rounded p-1">
+                        <div class="heading">
+                            <img class="invert" src="l2.svg" alt="library">
+                            <h2>Your Library</h2>
 
-                    </div>
-                    <div class="songlist">
-                        <ul id="songList">
-                            <li>
-                                song name
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="footer">
-                        <div><a href="https://www.spotify.com/in-en/legal/"><span>Legal</span></a></div>
-                        <div><a href="https://www.spotify.com/in-en/safetyandprivacy/"> <span>Safety & Privacy
-                                    Center</span> </a>
                         </div>
-                        <div><a href="https://www.spotify.com/in-en/legal/privacy-policy/"><span>Privacy
-                                    Policy</span></a>
+                        <div class="songlist">
+                            <ul id="songList">
+                                <li>
+                                    song name
+                                </li>
+                            </ul>
                         </div>
-                        <div>
-                            <a href="https://www.spotify.com/in-en/legal/cookies-policy/">
-                                <span>Cookies</span>
-                            </a>
+                        <div class="footer">
+                            <div><a href="https://www.spotify.com/in-en/legal/"><span>Legal</span></a></div>
+                            <div><a href="https://www.spotify.com/in-en/safetyandprivacy/"> <span>Safety & Privacy
+                                        Center</span> </a>
+                            </div>
+                            <div><a href="https://www.spotify.com/in-en/legal/privacy-policy/"><span>Privacy
+                                        Policy</span></a>
+                            </div>
+                            <div>
+                                <a href="https://www.spotify.com/in-en/legal/cookies-policy/">
+                                    <span>Cookies</span>
+                                </a>
+                            </div>
+                            <div>
+                                <a href="https://www.spotify.com/in-en/legal/privacy-policy/#s3">
+                                    <span>About Ads</span>
+                                </a>
+                            </div>
+                            <div>
+                                <a href="https://www.spotify.com/in-en/accessibility/">
+                                    <span>Accessibility</span>
+                                </a>
+                            </div>
                         </div>
-                        <div>
-                            <a href="https://www.spotify.com/in-en/legal/privacy-policy/#s3">
-                                <span>About Ads</span>
-                            </a>
-                        </div>
-                        <div>
-                            <a href="https://www.spotify.com/in-en/accessibility/">
-                                <span>Accessibility</span>
-                            </a>
-                        </div>
-                    </div>
 
+                    </section>
+                    <section class="spotifyplaylist bg-grey rounded">
+                        <h2>Playlist</h2>
+                        <div class="dashboard">
+                            <section class="panel favpanel">
+                                <div class="panelhead">
+             
+                                    <h3>Saved Favorites</h3>
+                                    <span>Keep the songs you want to come back to</span>
+                                </div>
+                                <ul id="favoriteList" class="favoritelist"></ul>
+                            </section>
+                        </div>
+                    </section>
                 </div>
             </div>
-            <div class="right bg-grey rounded">
-                <div class="header">
-                    <div class="buttons">
-                        <button class="signupbtn"> Sign up</button>
-                        <button class="loginbtn">Log in</button>
-                    </div>
-                </div>
-                <div class="spotifyplaylist">
-                    <h2>Playlist</h2>
-                    <div class="dashboard">
-                        <section class="panel recentpanel">
-                            <div class="panelhead">
-                                <h3>Recently Played</h3>
-                                <span>Quick access to the songs you opened most recently</span>
-                            </div>
-                            <ul id="recentList" class="recentlist"></ul>
-                        </section>
-                    </div>
-                    <div class="playbar">
-                        <div class="songbuttons">
-                            <div class="songinfo"></div>
-                            <img id="prevBtn" width="50" height="50"
-                                src="https://img.icons8.com/ios-glyphs/50/previous.png" alt="previous" />
-                            <img id="playBtn" class="invert" width="50" height="50"
-                                src="https://img.icons8.com/liquid-glass/50/play.png" alt="play" />
-                            <img id="nextBtn" width="50" height="50"
-                                src="https://img.icons8.com/forma-light-filled/24/next.png" alt="next" />
+            <div class="playbar">
+                <div class="songbuttons">
+                    <div class="songinfo"></div>
+                    <img id="prevBtn" width="50" height="50"
+                        src="https://img.icons8.com/ios-glyphs/50/previous.png" alt="previous" />
+                    <img id="playBtn" class="invert" width="50" height="50"
+                        src="https://img.icons8.com/liquid-glass/50/play.png" alt="play" />
+                    <img id="nextBtn" width="50" height="50"
+                        src="https://img.icons8.com/forma-light-filled/24/next.png" alt="next" />
 
-                        </div>
-                        <input id="seekBar" class="seekbar" type="range" min="0" max="50" value="0"
-                            aria-label="Seek song position" />
-                        <div id="songTime" class="songtime"></div>
-                    </div>
                 </div>
+                <input id="seekBar" class="seekbar" type="range" min="0" max="50" value="0"
+                    aria-label="Seek song position" />
+                <div id="songTime" class="songtime"></div>
             </div>
         </div>
         <script src="script.js"></script>

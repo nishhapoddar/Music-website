@@ -8,15 +8,15 @@ const prevButton = document.getElementById('prevBtn');
 const seekBar = document.getElementById('seekBar');
 const songInfoElement = document.querySelector('.songinfo');
 const songTimeElement = document.getElementById('songTime');
-const recentListElement = document.getElementById('recentList');
+const favoriteListElement = document.getElementById('favoriteList');
 
-const RECENT_KEY = 'spotify_clone_recent_songs';
+const FAVORITES_KEY = 'spotify_clone_favorite_songs';
 
 const audio = new Audio();
 let songs = [];
 let currentIndex = 0;
 let isPlaying = false;
-let recentSongs = [];
+let favoriteSongs = [];
 let songSearchQuery = '';
 
 function updateLibraryHighlight() {
@@ -51,19 +51,19 @@ function getArtistName(song) {
 	return song.artist || song.artistName || artistMap[song.title] || 'Arijit Singh';
 }
 
-function persistRecentSongs() {
-	localStorage.setItem(RECENT_KEY, JSON.stringify(recentSongs));
+function persistFavoriteSongs() {
+	localStorage.setItem(FAVORITES_KEY, JSON.stringify(favoriteSongs));
 }
 
-function renderRecentSongs() {
-	recentListElement.innerHTML = '';
+function renderFavoriteSongs() {
+	favoriteListElement.innerHTML = '';
 
-	if (!recentSongs.length) {
-		recentListElement.innerHTML = '<li class="empty-state">No songs played yet</li>';
+	if (!favoriteSongs.length) {
+		favoriteListElement.innerHTML = '<li class="empty-state">No favorites saved yet</li>';
 		return;
 	}
 
-	recentSongs.forEach((songId) => {
+	favoriteSongs.forEach((songId) => {
 		const song = getSongById(songId);
 
 		if (!song) {
@@ -71,23 +71,43 @@ function renderRecentSongs() {
 		}
 
 		const listItem = document.createElement('li');
-		listItem.className = 'recent-card';
+		listItem.className = 'favorite-card';
 		listItem.innerHTML = `
-			<img class="recent-card-cover" src="${song.cover || 'https://i.scdn.co/image/ab67616d00001e0233bc5d16517fed8db985360c'}" alt="${song.title}">
-			<div class="recent-card-copy">
+			<img class="favorite-card-cover" src="${song.cover || 'https://i.scdn.co/image/ab67616d00001e0233bc5d16517fed8db985360c'}" alt="${song.title}">
+			<div class="favorite-card-copy">
 				<strong>${song.title}</strong>
 				<span>${getArtistName(song)}</span>
 			</div>
 		`;
 		listItem.addEventListener('click', () => loadSong(songs.findIndex((item) => item.id === songId)));
-		recentListElement.appendChild(listItem);
+		favoriteListElement.appendChild(listItem);
 	});
 }
 
-function addSongToRecent(songId) {
-	recentSongs = [songId, ...recentSongs.filter((entry) => entry !== songId)].slice(0, 6);
-	persistRecentSongs();
-	renderRecentSongs();
+function isFavorite(songId) {
+	return favoriteSongs.includes(songId);
+}
+
+function toggleFavoriteSong(songId) {
+	if (isFavorite(songId)) {
+		favoriteSongs = favoriteSongs.filter((entry) => entry !== songId);
+	} else {
+		favoriteSongs = [songId, ...favoriteSongs];
+	}
+
+	persistFavoriteSongs();
+	renderFavoriteSongs();
+	renderSongs();
+
+}
+
+function renderFavoriteButton(songId) {
+	const saved = isFavorite(songId);
+	return `
+		<button class="song-favorite ${saved ? 'saved' : ''}" type="button" aria-label="${saved ? 'Remove from favorites' : 'Save to favorites'}">
+			${saved ? '♥' : '♡'}
+		</button>
+	`;
 }
 
 function formatTime(seconds) {
@@ -120,7 +140,6 @@ function updateNowPlaying() {
 
 	songInfoElement.textContent = `Playing: ${currentSong.title}`;
 	updateLibraryHighlight();
-	addSongToRecent(currentSong.id);
 }
 
 function loadSong(index, shouldPlay = true) {
@@ -181,10 +200,15 @@ function renderSongs() {
 				<strong class="song-title">${song.title}</strong>
 					<span class="song-artist">${getArtistName(song)}</span>
 			</div>
+			${renderFavoriteButton(song.id)}
 		`;
 		listItem.querySelector('.song-play').addEventListener('click', (event) => {
 			event.stopPropagation();
 			loadSong(index);
+		});
+		listItem.querySelector('.song-favorite').addEventListener('click', (event) => {
+			event.stopPropagation();
+			toggleFavoriteSong(song.id);
 		});
 		listItem.addEventListener('click', () => loadSong(index));
 		songListElement.appendChild(listItem);
@@ -286,9 +310,9 @@ fetch('songs.json')
 	})
 	.then((data) => {
 		songs = data;
-		recentSongs = JSON.parse(localStorage.getItem(RECENT_KEY) || '[]');
+		favoriteSongs = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
 		renderSongs();
-		renderRecentSongs();
+		renderFavoriteSongs();
 
 		if (songs.length) {
 			updateNowPlaying();
