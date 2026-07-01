@@ -28,9 +28,22 @@ function createCoverArt(title, seed) {
   const hue = baseHash % 360;
   const hue2 = (hue + 45) % 360;
   const label = title.slice(0, 2).toUpperCase();
-h
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="${title}">
+      <defs>
+        <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="hsl(${hue}, 78%, 52%)" />
+          <stop offset="100%" stop-color="hsl(${hue2}, 72%, 34%)" />
+        </linearGradient>
+      </defs>
+      <rect width="400" height="400" rx="40" fill="url(#g)" />
+      <circle cx="320" cy="84" r="70" fill="rgba(255,255,255,0.12)" />
+      <circle cx="88" cy="320" r="84" fill="rgba(0,0,0,0.16)" />
+      <text x="200" y="225" text-anchor="middle" dominant-baseline="middle" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="120" font-weight="700">${label}</text>
+    </svg>
+  `.trim();
 
-  return encodeURIComponent(svg);
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }
 
 function findTerminator(buffer, start, encoding) {
